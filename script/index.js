@@ -157,5 +157,188 @@ function getNumbers(n) {
     }
 }
 
-console.log(getNumbers(20));
 
+/* Advanced level */
+
+function isString(string) {
+    if(typeof string === 'string') {
+        return string;
+    }
+
+    throw new TypeError('Invalid data type');
+}
+
+function isNumber(number) {
+    if(isNaN(number) || typeof number !== 'number') {
+        throw new TypeError('Invalid data type');
+    }
+
+    return number;
+}
+
+function isBoolean(value) {
+    if(typeof value === 'boolean') {
+        return value;
+    }
+
+    throw new TypeError('Invalid data type');
+}
+
+function isEmail(string) {
+    if(isString(string) && string.includes("@")) {
+        return string;
+    }
+
+    throw new TypeError('Invalid data type');
+}
+
+class University {
+    constructor(university_title, university_faculty, department_of_the_university) {
+        this.university_title = university_title;
+        this.university_faculty = university_faculty;
+        this.department_of_the_university = department_of_the_university;
+    }
+
+    get university_title() {
+        return this._university_title;
+    }
+
+    set university_title(name) {
+        this._university_title = isString(name);
+    }
+
+    get university_faculty() {
+        return this._university_faculty;
+    }
+
+    set university_faculty(name) {
+        this._university_faculty = isString(name);
+    }
+
+    get department_of_the_university() {
+        return this._department_of_the_university;
+    }
+
+    set department_of_the_university(name) {
+        this._department_of_the_university = isString(name);
+    }
+}
+
+let u = new University("f","f","f");
+
+class Student extends University {
+    constructor(
+            university_title, university_faculty, department_of_the_university, 
+            firstName, lastName, dateOfApplication, isMale, e_mail, telephone_number, address) {
+        super(university_title, university_faculty, department_of_the_university);
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.dateOfApplication = dateOfApplication;
+        this.isMale = isMale;
+
+        class Contact_details {
+            constructor(e_mail, telephone_number, address) {
+                this.e_mail = e_mail;
+                this.telephone_number = telephone_number;
+                this.address = address;
+            }
+
+            get e_mail() {
+                return this._e_mail;
+            }
+
+            set e_mail(string) {
+                this._e_mail = isEmail(string);
+            }
+
+            get telephone_number() {
+                return this._telephone_number;
+            }
+
+            set telephone_number(value) {
+                this._telephone_number = isNumber(value);
+            }
+
+            get address() {
+                return this._address;
+            }
+
+            set address(string) {
+                this._address = isString(string);
+            }
+        }
+
+        this.contact_details = new Contact_details(e_mail, telephone_number, address);
+    }
+
+    get firstName() {
+        return this._firstName;
+    }
+
+    set firstName(name) {
+        this._firstName = isString(name);
+    }
+
+    get lastName() {
+        return this._lastName;
+    }
+
+    set lastName(name) {
+        this._lastName = isString(name);
+    }
+
+    get dateOfApplication() {
+        return this._dateOfApplication;
+    }
+
+    set dateOfApplication(dateOfApplication) {
+        if( typeof dateOfApplication !== 'string' && ( typeof dateOfApplication !== 'number' || isNaN(dateOfApplication) ) ) {
+            throw new TypeError("Invalid data type");
+        }
+
+        if( 
+            ( new Date(dateOfApplication) > new Date() ) ||
+            ( (Math.floor((new Date() - new Date(dateOfApplication))/(365*24*3600*1000)) + 1) > 5 )
+        ) {
+            throw RangeError("Invalid data range");
+        }
+
+        if(!this.dateOfApplication) {
+            this._dateOfApplication = new Date(dateOfApplication);
+        }
+    }
+
+    get isMale() {
+        return this._isMale;
+    }
+
+    set isMale(value) {
+        this._isMale = isBoolean(value);
+    }
+
+    get course() {
+        return Math.floor((new Date() - this.dateOfApplication)/(365*24*3600*1000))+1;
+    }
+
+    showInfo(object) {
+        if(!object) {
+            for(let item in this) {
+                if (typeof this[item] === "object") {
+                    this.showInfo(this[item]);
+                } else {
+                    console.log(`${item} - ${this[item]}`);
+                }
+            }
+        } else {
+            for(let item in object) {
+                if (typeof object[item] === "object") {
+                    this.showInfo(object[item]);
+                } else {
+                    console.log(`${item} - ${object[item]}`);
+                }  
+            }
+        }
+    }
+}
+
+const s = new Student("f", "f", "f", "f", "f", '2019-09-01T00:00:00.000', true, "m@m", 234234, "f");
