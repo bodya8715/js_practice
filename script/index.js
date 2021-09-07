@@ -226,6 +226,38 @@ class University {
 
 let u = new University("f","f","f");
 
+class Contact_details {
+    constructor(e_mail, telephone_number, address) {
+        this.e_mail = e_mail;
+        this.telephone_number = telephone_number;
+        this.address = address;
+    }
+
+    get e_mail() {
+        return this._e_mail;
+    }
+
+    set e_mail(string) {
+        this._e_mail = isEmail(string);
+    }
+
+    get telephone_number() {
+        return this._telephone_number;
+    }
+
+    set telephone_number(value) {
+        this._telephone_number = isNumber(value);
+    }
+
+    get address() {
+        return this._address;
+    }
+
+    set address(string) {
+        this._address = isString(string);
+    }
+}
+
 class Student extends University {
     constructor(
             university_title, university_faculty, department_of_the_university, 
@@ -235,39 +267,6 @@ class Student extends University {
         this.lastName = lastName;
         this.dateOfApplication = dateOfApplication;
         this.isMale = isMale;
-
-        class Contact_details {
-            constructor(e_mail, telephone_number, address) {
-                this.e_mail = e_mail;
-                this.telephone_number = telephone_number;
-                this.address = address;
-            }
-
-            get e_mail() {
-                return this._e_mail;
-            }
-
-            set e_mail(string) {
-                this._e_mail = isEmail(string);
-            }
-
-            get telephone_number() {
-                return this._telephone_number;
-            }
-
-            set telephone_number(value) {
-                this._telephone_number = isNumber(value);
-            }
-
-            get address() {
-                return this._address;
-            }
-
-            set address(string) {
-                this._address = isString(string);
-            }
-        }
-
         this.contact_details = new Contact_details(e_mail, telephone_number, address);
     }
 
